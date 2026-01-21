@@ -1,0 +1,602 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Checklist de Figurinos - Edy</title>
+  <style>
+    :root{
+      --bg:#0b0f14;
+      --card:#121a24;
+      --card2:#0f1620;
+      --text:#eaf2ff;
+      --muted:#9fb2cc;
+      --line:#223043;
+      --accent:#00e5ff;
+      --ok:#2cff88;
+      --warn:#ffd166;
+      --danger:#ff4d6d;
+      --shadow: 0 18px 40px rgba(0,0,0,.35);
+      --r:18px;
+    }
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: radial-gradient(1200px 600px at 20% 0%, rgba(0,229,255,.10), transparent 60%),
+                  radial-gradient(900px 500px at 90% 20%, rgba(44,255,136,.10), transparent 55%),
+                  var(--bg);
+      color: var(--text);
+    }
+    header{
+      padding: 22px 16px 10px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .top{
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+      justify-content:space-between;
+      flex-wrap:wrap;
+    }
+    h1{
+      font-size: 18px;
+      margin:0;
+      letter-spacing:.3px;
+    }
+    .sub{
+      margin-top:6px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height:1.4;
+    }
+    .clock{
+      padding:12px 14px;
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.08);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+      min-width: 260px;
+    }
+    .clock .t{
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+    .clock .d{
+      font-size: 12px;
+      color: var(--muted);
+      margin-top:4px;
+    }
+    main{
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 10px 16px 30px;
+    }
+    .toolbar{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+      justify-content:space-between;
+      margin: 12px 0 14px;
+    }
+    .leftTools, .rightTools{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+    }
+    button, .fileBtn{
+      border:none;
+      cursor:pointer;
+      padding:10px 12px;
+      border-radius: 14px;
+      color: var(--text);
+      background: linear-gradient(180deg, rgba(0,229,255,.20), rgba(0,229,255,.10));
+      border:1px solid rgba(0,229,255,.28);
+      box-shadow: 0 10px 22px rgba(0,0,0,.25);
+      font-weight: 650;
+      font-size: 13px;
+      transition: transform .08s ease, filter .15s ease;
+      user-select:none;
+    }
+    button:hover, .fileBtn:hover{ filter: brightness(1.08); }
+    button:active, .fileBtn:active{ transform: translateY(1px); }
+    .danger{
+      background: linear-gradient(180deg, rgba(255,77,109,.22), rgba(255,77,109,.10));
+      border:1px solid rgba(255,77,109,.30);
+    }
+    .ok{
+      background: linear-gradient(180deg, rgba(44,255,136,.20), rgba(44,255,136,.10));
+      border:1px solid rgba(44,255,136,.28);
+    }
+    .mutedBtn{
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.10);
+      color: var(--text);
+      font-weight: 600;
+    }
+    input[type="text"]{
+      padding:10px 12px;
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(18,26,36,.75);
+      color: var(--text);
+      min-width: 260px;
+      outline:none;
+    }
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.08);
+      border-radius: var(--r);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    table{
+      width:100%;
+      border-collapse: collapse;
+    }
+    thead th{
+      text-align:left;
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 700;
+      letter-spacing:.4px;
+      padding: 14px 12px;
+      background: rgba(15,22,32,.70);
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+    tbody td{
+      padding: 12px;
+      border-bottom:1px solid rgba(255,255,255,.06);
+      vertical-align: middle;
+    }
+    tbody tr:hover{
+      background: rgba(0,229,255,.04);
+    }
+    .checkCell{
+      width: 110px;
+      white-space:nowrap;
+    }
+    .nameCell{
+      font-weight: 650;
+    }
+    .status{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:6px 10px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,.10);
+      font-size: 12px;
+      color: var(--muted);
+      background: rgba(0,0,0,.18);
+    }
+    .dot{
+      width:9px; height:9px; border-radius:999px;
+      background: var(--warn);
+      box-shadow: 0 0 0 3px rgba(255,209,102,.12);
+    }
+    .status.ok .dot{
+      background: var(--ok);
+      box-shadow: 0 0 0 3px rgba(44,255,136,.12);
+    }
+    .status.ok{ color: rgba(234,242,255,.92); }
+    .time{
+      font-size: 12px;
+      color: var(--muted);
+      white-space:nowrap;
+    }
+    .photoWrap{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .thumb{
+      width: 74px;
+      height: 46px;
+      border-radius: 12px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      overflow:hidden;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color: rgba(255,255,255,.35);
+      font-size: 12px;
+    }
+    .thumb img{
+      width:100%;
+      height:100%;
+      object-fit: cover;
+      display:block;
+    }
+    .fileBtn{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+    }
+    .fileBtn input{
+      display:none;
+    }
+    .small{
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .footerNote{
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+    @media print{
+      .toolbar, .footerNote, .clock{ display:none !important; }
+      body{ background:#fff; color:#000; }
+      .card{ box-shadow:none; border:1px solid #ddd; }
+      thead th{ background:#f5f5f5; color:#222; }
+      tbody td{ border-bottom:1px solid #e5e5e5; }
+      .status{ border:1px solid #ddd; background:#fff; }
+      .thumb{ border:1px solid #ddd; background:#fff; }
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div class="top">
+    <div>
+      <h1>Checklist de Figurinos (com fotos) — Edy</h1>
+      <div class="sub">Marque os itens, adicione foto por peça e salve automaticamente. Você pode exportar em PDF (impressão do navegador).</div>
+    </div>
+    <div class="clock" aria-live="polite">
+      <div class="t" id="clock">--:--:--</div>
+      <div class="d" id="date">--</div>
+      <div class="small" id="saveStatus">Salvamento: —</div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="toolbar">
+    <div class="leftTools">
+      <input id="search" type="text" placeholder="Buscar item (ex: jaqueta, camisa)..." />
+      <button class="ok" id="markAll">Marcar tudo</button>
+      <button class="mutedBtn" id="unmarkAll">Desmarcar tudo</button>
+    </div>
+
+    <div class="rightTools">
+      <button id="exportPDF">Exportar PDF</button>
+
+      <label class="fileBtn mutedBtn" title="Salvar um backup em arquivo .json">
+        Exportar Backup
+        <input id="exportJSON" type="button" />
+      </label>
+
+      <label class="fileBtn mutedBtn" title="Carregar um backup .json e restaurar">
+        Importar Backup
+        <input id="importJSON" type="file" accept="application/json" />
+      </label>
+
+      <button class="danger" id="clearAll">Limpar tudo</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:110px;">Check</th>
+          <th>Item</th>
+          <th style="width:170px;">Status</th>
+          <th style="width:170px;">Hora marcada</th>
+          <th style="width:320px;">Foto</th>
+        </tr>
+      </thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </div>
+
+  <div class="footerNote">
+    Dica: o PDF sai melhor se você imprimir em “A4” e ativar “Planilhas/Background graphics” (se existir).  
+    As fotos ficam salvas no seu navegador (LocalStorage). Se precisar passar para outro PC, use “Exportar Backup”.
+  </div>
+</main>
+
+<script>
+  // ====== CONFIG ======
+  const STORAGE_KEY = "edy_checklist_figurinos_v1";
+
+  const itemsDefault = [
+    { id:"calca", name:"Calça" },
+    { id:"camisa_branca_mc", name:"Camisa branca (manga curta)" },
+    { id:"sapato_preto", name:"Sapato preto" },
+    { id:"camisa_social_ml", name:"Camisa social (manga longa)" },
+    { id:"jaqueta_sport_preta", name:"Jaqueta sport preta" },
+    { id:"jaqueta_sport_branca", name:"Jaqueta branca sport" },
+    { id:"casaco_militar_preto_cintos", name:"Casaco preto militar com cintos" },
+    { id:"gravata_preta", name:"Gravata preta" },
+    { id:"cinto_preto", name:"Cinto preto" },
+    { id:"meia_preta", name:"Meia preta" },
+    { id:"sapato_social_preto", name:"Sapato social preto" },
+    { id:"blusa_moletom_cinza", name:"Blusa de moletom cinza" },
+    { id:"tenis_branco", name:"Tênis branco" },
+    { id:"jaqueta_jeans_azul", name:"Jaqueta jeans azul" },
+    { id:"camiseta_preta", name:"Camiseta preta" },
+    { id:"calca_social", name:"Calça social" },
+    { id:"boné_preto", name:"Boné preto" },
+    { id:"oculos_sol", name:"Óculos de sol" },
+   
+    
+  ];
+
+  // state shape:
+  // { items: { [id]: { checked:boolean, checkedAt:string|null, photoDataUrl:string|null } }, updatedAt:string }
+  function nowISO(){
+    return new Date().toISOString();
+  }
+  function formatDateTimeBR(iso){
+    if(!iso) return "—";
+    const d = new Date(iso);
+    return d.toLocaleString("pt-BR", { dateStyle:"short", timeStyle:"medium" });
+  }
+  function formatTimeBR(iso){
+    if(!iso) return "—";
+    const d = new Date(iso);
+    return d.toLocaleTimeString("pt-BR", { hour12:false });
+  }
+
+  function loadState(){
+    try{
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw) return null;
+      return JSON.parse(raw);
+    }catch(e){
+      return null;
+    }
+  }
+  function makeFreshState(){
+    const items = {};
+    for(const it of itemsDefault){
+      items[it.id] = { checked:false, checkedAt:null, photoDataUrl:null };
+    }
+    return { items, updatedAt: nowISO() };
+  }
+  function saveState(state){
+    state.updatedAt = nowISO();
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    setSaveStatus("Salvo em " + formatDateTimeBR(state.updatedAt));
+  }
+
+  // ====== UI ======
+  const rowsEl = document.getElementById("rows");
+  const searchEl = document.getElementById("search");
+  const saveStatusEl = document.getElementById("saveStatus");
+
+  function setSaveStatus(text){
+    saveStatusEl.textContent = "Salvamento: " + text;
+  }
+
+  let state = loadState();
+  if(!state){
+    state = makeFreshState();
+    saveState(state);
+  }else{
+    // garantir que itens novos existam (se você atualizar a lista no futuro)
+    for(const it of itemsDefault){
+      if(!state.items[it.id]){
+        state.items[it.id] = { checked:false, checkedAt:null, photoDataUrl:null };
+      }
+    }
+    saveState(state);
+  }
+
+  function statusBadge(checked){
+    if(checked){
+      return `<span class="status ok"><span class="dot"></span>OK (pronto)</span>`;
+    }
+    return `<span class="status"><span class="dot"></span>Pendente</span>`;
+  }
+
+  function render(){
+    const q = (searchEl.value || "").trim().toLowerCase();
+    rowsEl.innerHTML = "";
+
+    for(const it of itemsDefault){
+      const st = state.items[it.id] || { checked:false, checkedAt:null, photoDataUrl:null };
+      const match = !q || it.name.toLowerCase().includes(q);
+      if(!match) continue;
+
+      const hasPhoto = !!st.photoDataUrl;
+
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td class="checkCell">
+          <label style="display:flex;align-items:center;gap:10px;">
+            <input type="checkbox" data-action="check" data-id="${it.id}" ${st.checked ? "checked":""} />
+            <span style="font-size:12px;color:var(--muted);font-weight:700;">${st.checked ? "SIM":"NÃO"}</span>
+          </label>
+        </td>
+
+        <td class="nameCell">${it.name}</td>
+
+        <td>${statusBadge(st.checked)}</td>
+
+        <td class="time">${st.checked ? formatTimeBR(st.checkedAt) : "—"}</td>
+
+        <td>
+          <div class="photoWrap">
+            <div class="thumb" title="Preview">
+              ${hasPhoto ? `<img alt="Foto de ${it.name}" src="${st.photoDataUrl}">` : `<span>sem foto</span>`}
+            </div>
+
+            <label class="fileBtn" title="Adicionar/alterar foto">
+              ${hasPhoto ? "Trocar foto" : "Adicionar foto"}
+              <input type="file" accept="image/*" data-action="photo" data-id="${it.id}">
+            </label>
+
+            ${hasPhoto ? `<button class="mutedBtn" data-action="removePhoto" data-id="${it.id}">Remover</button>` : ``}
+          </div>
+        </td>
+      `;
+      rowsEl.appendChild(tr);
+    }
+  }
+
+  rowsEl.addEventListener("change", async (e) => {
+    const el = e.target;
+    const action = el.getAttribute("data-action");
+    const id = el.getAttribute("data-id");
+    if(!action || !id) return;
+
+    if(action === "check"){
+      const checked = el.checked;
+      state.items[id].checked = checked;
+      state.items[id].checkedAt = checked ? nowISO() : null;
+      saveState(state);
+      render();
+    }
+
+    if(action === "photo"){
+      const file = el.files && el.files[0];
+      if(!file) return;
+
+      // ler e salvar como DataURL (cuidado: fotos muito grandes podem lotar o LocalStorage)
+      const dataUrl = await readAsDataURL(file, 900); // reduz um pouco
+      state.items[id].photoDataUrl = dataUrl;
+      saveState(state);
+      render();
+    }
+  });
+
+  rowsEl.addEventListener("click", (e) => {
+    const btn = e.target;
+    if(!(btn instanceof HTMLElement)) return;
+    const action = btn.getAttribute("data-action");
+    const id = btn.getAttribute("data-id");
+    if(action === "removePhoto" && id){
+      state.items[id].photoDataUrl = null;
+      saveState(state);
+      render();
+    }
+  });
+
+  searchEl.addEventListener("input", render);
+
+  document.getElementById("markAll").addEventListener("click", () => {
+    const t = nowISO();
+    for(const it of itemsDefault){
+      state.items[it.id].checked = true;
+      state.items[it.id].checkedAt = t;
+    }
+    saveState(state);
+    render();
+  });
+
+  document.getElementById("unmarkAll").addEventListener("click", () => {
+    for(const it of itemsDefault){
+      state.items[it.id].checked = false;
+      state.items[it.id].checkedAt = null;
+    }
+    saveState(state);
+    render();
+  });
+
+  document.getElementById("clearAll").addEventListener("click", () => {
+    // confirmação simples
+    const ok = confirm("Tem certeza? Isso apaga checks e fotos salvas neste navegador.");
+    if(!ok) return;
+    state = makeFreshState();
+    saveState(state);
+    render();
+  });
+
+  document.getElementById("exportPDF").addEventListener("click", () => {
+    // use impressão do navegador; o CSS @media print já ajuda
+    window.print();
+  });
+
+  // Export/Import JSON backup
+  document.querySelector('label[title*="Salvar um backup"]')?.addEventListener("click", () => {
+    const blob = new Blob([JSON.stringify(state, null, 2)], { type:"application/json" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "backup-figurinos-edy.json";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(()=>URL.revokeObjectURL(a.href), 4000);
+  });
+
+  document.getElementById("importJSON").addEventListener("change", async (e) => {
+    const file = e.target.files && e.target.files[0];
+    if(!file) return;
+    try{
+      const text = await file.text();
+      const data = JSON.parse(text);
+      if(!data || !data.items) throw new Error("Arquivo inválido.");
+      state = data;
+
+      // garantir itens default
+      for(const it of itemsDefault){
+        if(!state.items[it.id]){
+          state.items[it.id] = { checked:false, checkedAt:null, photoDataUrl:null };
+        }
+      }
+      saveState(state);
+      render();
+      alert("Backup importado com sucesso!");
+    }catch(err){
+      alert("Não consegui importar esse arquivo. Verifique se é um backup válido.");
+    }finally{
+      e.target.value = "";
+    }
+  });
+
+  // ====== clock ======
+  function tick(){
+    const d = new Date();
+    document.getElementById("clock").textContent =
+      d.toLocaleTimeString("pt-BR", { hour12:false });
+    document.getElementById("date").textContent =
+      d.toLocaleDateString("pt-BR", { weekday:"long", year:"numeric", month:"long", day:"2-digit" });
+  }
+  setInterval(tick, 1000);
+  tick();
+
+  // ====== helpers: compress image ======
+  function readAsDataURL(file, maxWidth){
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onerror = reject;
+      reader.onload = () => {
+        const img = new Image();
+        img.onload = () => {
+          // resize
+          const scale = Math.min(1, maxWidth / img.width);
+          const w = Math.round(img.width * scale);
+          const h = Math.round(img.height * scale);
+
+          const canvas = document.createElement("canvas");
+          canvas.width = w; canvas.height = h;
+          const ctx = canvas.getContext("2d");
+          ctx.drawImage(img, 0, 0, w, h);
+
+          // jpeg para reduzir tamanho (pode trocar para 'image/png' se preferir)
+          const dataUrl = canvas.toDataURL("image/jpeg", 0.82);
+          resolve(dataUrl);
+        };
+        img.onerror = reject;
+        img.src = reader.result;
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  // init
+  setSaveStatus("Carregado");
+  render();
+</script>
+</body>
+</html>
