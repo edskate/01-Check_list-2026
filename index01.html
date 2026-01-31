@@ -1,0 +1,717 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Checklist de Aula (Edy) • Relógio + Calendário 2026</title>
+  <style>
+    :root{
+      --bg:#0b0f14;
+      --card:#121a24;
+      --card2:#0f1620;
+      --text:#eaf2ff;
+      --muted:#9fb2cc;
+      --line:#223043;
+      --accent:#00e5ff;
+      --ok:#2cff88;
+      --warn:#ffd166;
+      --danger:#ff4d6d;
+      --shadow:0 18px 40px rgba(0,0,0,.35);
+      --r:18px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(1200px 700px at 10% -10%, rgba(0,229,255,.18), transparent 60%),
+        radial-gradient(900px 600px at 110% 10%, rgba(44,255,136,.12), transparent 55%),
+        var(--bg);
+      color:var(--text);
+      padding:18px;
+    }
+    .wrap{max-width:1100px;margin:0 auto;display:grid;gap:14px}
+    header{
+      display:flex; gap:12px; align-items:stretch; flex-wrap:wrap;
+    }
+    .brand{
+      flex:1 1 420px;
+      background:linear-gradient(180deg, rgba(18,26,36,.92), rgba(15,22,32,.92));
+      border:1px solid var(--line);
+      border-radius:var(--r);
+      box-shadow:var(--shadow);
+      padding:14px 14px 12px;
+      display:flex; justify-content:space-between; gap:14px; align-items:center;
+    }
+    .brand h1{margin:0;font-size:18px;letter-spacing:.2px}
+    .brand p{margin:4px 0 0;color:var(--muted);font-size:13px}
+    .pillrow{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:flex-end}
+    .pill{
+      border:1px solid var(--line);
+      background:rgba(11,15,20,.55);
+      padding:8px 10px;
+      border-radius:999px;
+      font-size:12px;
+      color:var(--muted);
+      display:flex; gap:8px; align-items:center;
+      white-space:nowrap;
+    }
+    .dot{width:8px;height:8px;border-radius:999px;background:var(--accent);box-shadow:0 0 0 3px rgba(0,229,255,.12)}
+    .clock{
+      flex:0 0 240px;
+      background:linear-gradient(180deg, rgba(18,26,36,.92), rgba(15,22,32,.92));
+      border:1px solid var(--line);
+      border-radius:var(--r);
+      box-shadow:var(--shadow);
+      padding:14px;
+      display:flex;flex-direction:column;justify-content:center;gap:6px;
+    }
+    .clock .time{
+      font-variant-numeric: tabular-nums;
+      font-weight:800;
+      font-size:28px;
+      letter-spacing:.6px;
+    }
+    .clock .date{color:var(--muted);font-size:12.5px}
+    .grid{
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap:14px;
+    }
+    @media (max-width: 900px){
+      .grid{grid-template-columns:1fr}
+      .clock{flex:1 1 240px}
+    }
+    .card{
+      background:linear-gradient(180deg, rgba(18,26,36,.92), rgba(15,22,32,.92));
+      border:1px solid var(--line);
+      border-radius:var(--r);
+      box-shadow:var(--shadow);
+      padding:14px;
+    }
+    .card h2{
+      margin:0 0 10px;
+      font-size:14px;
+      letter-spacing:.2px;
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+    }
+    .sub{color:var(--muted);font-size:12px;margin-top:-6px;margin-bottom:10px}
+
+    /* Checklist */
+    .section{
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:rgba(11,15,20,.35);
+      padding:12px;
+      margin-bottom:10px;
+    }
+    .section h3{margin:0 0 8px;font-size:13px;color:var(--text)}
+    .items{display:grid;gap:8px}
+    .item{
+      display:flex;gap:10px;align-items:flex-start;
+      padding:10px;
+      border:1px solid rgba(34,48,67,.75);
+      border-radius:14px;
+      background:rgba(15,22,32,.5);
+    }
+    .item input[type="checkbox"]{
+      width:18px;height:18px;margin-top:2px; accent-color: var(--accent);
+    }
+    .itxt{flex:1}
+    .itxt .t{font-size:13px;line-height:1.2;margin:0}
+    .itxt .m{font-size:12px;color:var(--muted);margin:3px 0 0}
+    .stamp{
+      font-variant-numeric: tabular-nums;
+      font-size:11px;
+      color:var(--muted);
+      border:1px solid rgba(34,48,67,.8);
+      border-radius:999px;
+      padding:6px 8px;
+      background:rgba(11,15,20,.4);
+      white-space:nowrap;
+    }
+    .row{
+      display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;
+      margin-top:10px;
+    }
+    .btns{display:flex;gap:8px;flex-wrap:wrap}
+    button{
+      cursor:pointer;
+      border:1px solid var(--line);
+      background:rgba(11,15,20,.55);
+      color:var(--text);
+      padding:10px 12px;
+      border-radius:14px;
+      font-weight:700;
+      font-size:12px;
+      transition:transform .06s ease, border-color .2s ease;
+    }
+    button:hover{border-color:rgba(0,229,255,.45)}
+    button:active{transform:translateY(1px)}
+    .ok{border-color:rgba(44,255,136,.45)}
+    .danger{border-color:rgba(255,77,109,.55)}
+    .small{font-size:11px;color:var(--muted)}
+    .prog{
+      height:10px;border-radius:999px;background:rgba(34,48,67,.55);
+      overflow:hidden;border:1px solid rgba(34,48,67,.9);
+      margin-top:8px;
+    }
+    .bar{height:100%;width:0%;background:linear-gradient(90deg, var(--accent), var(--ok))}
+    .stats{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+    .stat{
+      border:1px solid rgba(34,48,67,.75);
+      background:rgba(11,15,20,.35);
+      padding:8px 10px;border-radius:14px;
+      font-size:12px;color:var(--muted);
+    }
+    .stat b{color:var(--text)}
+
+    /* Calendar */
+    .cal-top{
+      display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap;
+      margin-bottom:10px;
+    }
+    .cal-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+    .cal-actions input[type="date"]{
+      background:rgba(11,15,20,.55);
+      border:1px solid var(--line);
+      color:var(--text);
+      padding:9px 10px;
+      border-radius:14px;
+      font-size:12px;
+    }
+    .cal-grid{
+      display:grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap:8px;
+    }
+    .dow{
+      font-size:11px;color:var(--muted);
+      text-align:center;
+      padding:6px 0;
+    }
+    .day{
+      border:1px solid rgba(34,48,67,.75);
+      background:rgba(11,15,20,.35);
+      border-radius:14px;
+      padding:10px 8px;
+      min-height:48px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      cursor:pointer;
+      user-select:none;
+      transition: transform .06s ease, border-color .2s ease;
+    }
+    .day:hover{border-color:rgba(0,229,255,.35)}
+    .day:active{transform:translateY(1px)}
+    .day .n{font-variant-numeric: tabular-nums;font-weight:800}
+    .day .tag{font-size:10px;color:var(--muted)}
+    .muted{opacity:.35}
+    .today{
+      border-color:rgba(0,229,255,.55);
+      box-shadow:0 0 0 3px rgba(0,229,255,.12) inset;
+    }
+    .selected{
+      border-color:rgba(44,255,136,.55);
+      box-shadow:0 0 0 3px rgba(44,255,136,.10) inset;
+    }
+    .legend{
+      display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;color:var(--muted);font-size:12px
+    }
+    .lg{display:flex;gap:8px;align-items:center}
+    .sw{width:12px;height:12px;border-radius:4px;border:1px solid var(--line);background:rgba(11,15,20,.5)}
+    .sw.t{border-color:rgba(0,229,255,.6);box-shadow:0 0 0 3px rgba(0,229,255,.10) inset}
+    .sw.s{border-color:rgba(44,255,136,.6);box-shadow:0 0 0 3px rgba(44,255,136,.08) inset}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div>
+          <h1>Checklist de Aula • 2026</h1>
+          <p>Check-box + carimbo de horário + calendário (dia / mês / dia da semana) + contadores 2026.</p>
+        </div>
+        <div class="pillrow">
+          <div class="pill"><span class="dot"></span><span id="tzLabel">America/Sao_Paulo</span></div>
+          <div class="pill">📅 <span id="todayLong">—</span></div>
+        </div>
+      </div>
+
+      <div class="clock">
+        <div class="time" id="clock">--:--:--</div>
+        <div class="date" id="clockDate">—</div>
+        <div class="small" id="counters">—</div>
+      </div>
+    </header>
+
+    <div class="grid">
+      <!-- Checklist -->
+      <section class="card" aria-label="Checklist">
+        <h2>
+          <span>✅ Checklist da Aula</span>
+          <span class="small" id="progressTxt">0/0</span>
+        </h2>
+        <div class="sub">Marque as etapas. Cada item salva automaticamente e registra o horário em que foi concluído.</div>
+
+        <div class="section">
+          <h3>1) Preparação</h3>
+          <div class="items" id="sec-prep"></div>
+        </div>
+
+        <div class="section">
+          <h3>2) Conteúdo</h3>
+          <div class="items" id="sec-content"></div>
+        </div>
+
+        <div class="section">
+          <h3>3) Prática e Fechamento</h3>
+          <div class="items" id="sec-close"></div>
+        </div>
+
+        <div class="prog" aria-label="Progresso">
+          <div class="bar" id="bar"></div>
+        </div>
+
+        <div class="stats" id="stats"></div>
+
+        <div class="row">
+          <div class="btns">
+            <button class="ok" id="btnToday">Nova sessão (hoje)</button>
+            <button id="btnExport">Exportar (texto)</button>
+            <button class="danger" id="btnReset">Zerar tudo</button>
+          </div>
+          <div class="small" id="saveHint">💾 Salvando automaticamente no seu navegador (localStorage).</div>
+        </div>
+      </section>
+
+      <!-- Calendar -->
+      <aside class="card" aria-label="Calendário">
+        <h2>
+          <span>📆 Calendário (2026)</span>
+          <span class="small" id="monthLabel">—</span>
+        </h2>
+        <div class="sub">Clique em um dia para selecionar. O calendário sempre mostra dia/mês/dia da semana e destaca o “hoje”.</div>
+
+        <div class="cal-top">
+          <div class="cal-actions">
+            <button id="prev">◀ Mês</button>
+            <button id="next">Mês ▶</button>
+            <button id="goToday">Hoje</button>
+          </div>
+          <div class="cal-actions">
+            <input type="date" id="pickDate" />
+          </div>
+        </div>
+
+        <div class="cal-grid" id="cal">
+          <!-- DOW + days rendered by JS -->
+        </div>
+
+        <div class="legend">
+          <div class="lg"><span class="sw t"></span>Hoje</div>
+          <div class="lg"><span class="sw s"></span>Selecionado</div>
+        </div>
+
+        <div class="section" style="margin-top:12px">
+          <h3>📌 Data selecionada</h3>
+          <div class="small" id="selectedInfo">—</div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <script>
+    // ===== Helpers =====
+    const pad = (n) => String(n).padStart(2, "0");
+
+    function formatLong(date){
+      // "quinta-feira, 22 de janeiro de 2026"
+      return new Intl.DateTimeFormat("pt-BR", {
+        weekday:"long", day:"2-digit", month:"long", year:"numeric"
+      }).format(date);
+    }
+    function formatShort(date){
+      return new Intl.DateTimeFormat("pt-BR", {
+        day:"2-digit", month:"2-digit", year:"numeric"
+      }).format(date);
+    }
+    function timeNow(){
+      const d = new Date();
+      return `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+    }
+    function ymd(date){
+      // local YYYY-MM-DD for input[type=date]
+      const y = date.getFullYear();
+      const m = pad(date.getMonth()+1);
+      const d = pad(date.getDate());
+      return `${y}-${m}-${d}`;
+    }
+    function startOfDay(date){
+      const d = new Date(date);
+      d.setHours(0,0,0,0);
+      return d;
+    }
+    function diffDays(a,b){
+      // integer days between dates at start-of-day
+      const ms = 24*60*60*1000;
+      return Math.round((startOfDay(a) - startOfDay(b)) / ms);
+    }
+
+    // ===== Relógio + Data + Contadores 2026 =====
+    const clockEl = document.getElementById("clock");
+    const clockDateEl = document.getElementById("clockDate");
+    const todayLongEl = document.getElementById("todayLong");
+    const countersEl = document.getElementById("counters");
+
+    function updateClock(){
+      const now = new Date();
+      clockEl.textContent = timeNow();
+      clockDateEl.textContent = formatLong(now);
+
+      // Contadores 2026
+      const jan1 = new Date(2026,0,1);
+      const daysSinceJan1 = diffDays(now, jan1); // 0 em 01/01/2026
+      const dayOfYear = daysSinceJan1 + 1;
+
+      // "dias desde o início (hoje)" -> usando uma data salva (pode ser redefinida)
+      const state = loadState();
+      const startDate = state?.sessionStart ? new Date(state.sessionStart) : startOfDay(now);
+      const daysSinceStart = diffDays(now, startDate);
+
+      countersEl.textContent =
+        `Dia do ano (2026): ${dayOfYear} • Dias desde 01/01/2026: ${daysSinceJan1} • Dias desde início da sessão: ${daysSinceStart}`;
+
+      todayLongEl.textContent = formatShort(now);
+    }
+    setInterval(updateClock, 250);
+    updateClock();
+
+    // ===== Checklist data =====
+    const checklist = {
+      prep: [
+        { id:"prep-1", title:"Abrir material da aula (slides/roteiro)", meta:"Deixar tudo pronto antes de começar." },
+        { id:"prep-2", title:"Checar som / vídeo / internet", meta:"Teste rápido de 30 segundos." },
+        { id:"prep-3", title:"Definir objetivo da aula (1 frase)", meta:"Ex.: “Hoje vamos dominar X”." },
+      ],
+      content: [
+        { id:"cont-1", title:"Explicar conceito principal (teoria)", meta:"Curto e claro." },
+        { id:"cont-2", title:"Mostrar 1 exemplo na prática", meta:"Demonstração guiada." },
+        { id:"cont-3", title:"Perguntas rápidas (3 min)", meta:"Checar entendimento." },
+      ],
+      close: [
+        { id:"close-1", title:"Exercício prático (tempo cronometrado)", meta:"Alunos executam." },
+        { id:"close-2", title:"Feedback + ajustes", meta:"O que melhorou / o que falta." },
+        { id:"close-3", title:"Encerrar com tarefa da próxima aula", meta:"Definir o próximo passo." },
+      ]
+    };
+
+    // ===== Storage =====
+    const KEY = "edy_aula_2026_checklist_v1";
+
+    function defaultState(){
+      return {
+        sessionStart: startOfDay(new Date()).toISOString(),
+        checked: {},   // id: true/false
+        stamps: {},    // id: "HH:MM:SS • DD/MM/AAAA"
+        calendar: {
+          viewYear: new Date().getFullYear(),
+          viewMonth: new Date().getMonth(),
+          selected: ymd(new Date())
+        }
+      };
+    }
+
+    function loadState(){
+      try{
+        const raw = localStorage.getItem(KEY);
+        if(!raw) return defaultState();
+        const parsed = JSON.parse(raw);
+        return { ...defaultState(), ...parsed };
+      }catch(e){
+        return defaultState();
+      }
+    }
+    function saveState(state){
+      localStorage.setItem(KEY, JSON.stringify(state));
+    }
+
+    let state = loadState();
+
+    // ===== Render Checklist =====
+    function renderItem(item){
+      const wrap = document.createElement("div");
+      wrap.className = "item";
+
+      const cb = document.createElement("input");
+      cb.type = "checkbox";
+      cb.checked = !!state.checked[item.id];
+
+      const txt = document.createElement("div");
+      txt.className = "itxt";
+      txt.innerHTML = `
+        <p class="t">${item.title}</p>
+        <p class="m">${item.meta}</p>
+      `;
+
+      const stamp = document.createElement("div");
+      stamp.className = "stamp";
+      stamp.textContent = state.stamps[item.id] ? `⏱ ${state.stamps[item.id]}` : "⏱ —";
+
+      cb.addEventListener("change", () => {
+        state.checked[item.id] = cb.checked;
+
+        if(cb.checked){
+          const now = new Date();
+          state.stamps[item.id] = `${timeNow()} • ${formatShort(now)}`;
+        }else{
+          delete state.stamps[item.id];
+        }
+        saveState(state);
+        stamp.textContent = state.stamps[item.id] ? `⏱ ${state.stamps[item.id]}` : "⏱ —";
+        updateProgress();
+      });
+
+      wrap.appendChild(cb);
+      wrap.appendChild(txt);
+      wrap.appendChild(stamp);
+      return wrap;
+    }
+
+    function mountSection(containerId, items){
+      const el = document.getElementById(containerId);
+      el.innerHTML = "";
+      items.forEach(it => el.appendChild(renderItem(it)));
+    }
+
+    mountSection("sec-prep", checklist.prep);
+    mountSection("sec-content", checklist.content);
+    mountSection("sec-close", checklist.close);
+
+    // ===== Progress =====
+    const progressTxt = document.getElementById("progressTxt");
+    const bar = document.getElementById("bar");
+    const stats = document.getElementById("stats");
+
+    function allItems(){
+      return [...checklist.prep, ...checklist.content, ...checklist.close];
+    }
+
+    function updateProgress(){
+      const items = allItems();
+      const total = items.length;
+      const done = items.filter(it => state.checked[it.id]).length;
+      const pct = total ? Math.round((done/total)*100) : 0;
+
+      progressTxt.textContent = `${done}/${total} (${pct}%)`;
+      bar.style.width = `${pct}%`;
+
+      // Mini stats
+      const now = new Date();
+      const jan1 = new Date(2026,0,1);
+      const dayOfYear = diffDays(now, jan1) + 1;
+
+      stats.innerHTML = "";
+      const a = document.createElement("div");
+      a.className = "stat";
+      a.innerHTML = `📌 <b>Dia do ano</b>: ${dayOfYear}`;
+      const b = document.createElement("div");
+      b.className = "stat";
+      b.innerHTML = `✅ <b>Concluídos</b>: ${done}/${total}`;
+      const c = document.createElement("div");
+      c.className = "stat";
+      c.innerHTML = `⏱ <b>Último check</b>: ${lastStamp() || "—"}`;
+      stats.append(a,b,c);
+    }
+
+    function lastStamp(){
+      const stamps = Object.values(state.stamps);
+      if(!stamps.length) return "";
+      // Pega o último pelo texto mesmo (não perfeito, mas funcional)
+      return stamps[stamps.length - 1];
+    }
+
+    updateProgress();
+
+    // ===== Buttons =====
+    document.getElementById("btnToday").addEventListener("click", () => {
+      // Nova sessão: zera checks, grava início hoje
+      state.sessionStart = startOfDay(new Date()).toISOString();
+      state.checked = {};
+      state.stamps = {};
+      saveState(state);
+      mountSection("sec-prep", checklist.prep);
+      mountSection("sec-content", checklist.content);
+      mountSection("sec-close", checklist.close);
+      updateProgress();
+      updateClock();
+    });
+
+    document.getElementById("btnReset").addEventListener("click", () => {
+      if(!confirm("Zerar tudo (checklist + carimbos + calendário)?")) return;
+      state = defaultState();
+      saveState(state);
+      mountSection("sec-prep", checklist.prep);
+      mountSection("sec-content", checklist.content);
+      mountSection("sec-close", checklist.close);
+      renderCalendar();
+      updateProgress();
+      updateClock();
+      updateSelectedInfo();
+    });
+
+    document.getElementById("btnExport").addEventListener("click", () => {
+      // Exporta como texto (sem PDF) para você colar onde quiser
+      const items = allItems();
+      const now = new Date();
+      const lines = [];
+      lines.push("CHECKLIST DE AULA • 2026");
+      lines.push(`Data/Hora exportação: ${formatLong(now)} ${timeNow()}`);
+      lines.push(`Início da sessão: ${formatLong(new Date(state.sessionStart))}`);
+      lines.push("");
+      items.forEach(it => {
+        const ok = state.checked[it.id] ? "[x]" : "[ ]";
+        const st = state.stamps[it.id] ? ` (${state.stamps[it.id]})` : "";
+        lines.push(`${ok} ${it.title}${st}`);
+      });
+
+      const blob = new Blob([lines.join("\n")], {type:"text/plain;charset=utf-8"});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `checklist-aula-2026-${ymd(new Date())}.txt`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    });
+
+    // ===== Calendar =====
+    const cal = document.getElementById("cal");
+    const monthLabel = document.getElementById("monthLabel");
+    const pickDate = document.getElementById("pickDate");
+    pickDate.value = state.calendar.selected || ymd(new Date());
+
+    const DOW = ["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"];
+
+    function renderCalendar(){
+      const viewY = state.calendar.viewYear;
+      const viewM = state.calendar.viewMonth;
+
+      const first = new Date(viewY, viewM, 1);
+      const last = new Date(viewY, viewM + 1, 0);
+      const today = ymd(new Date());
+      const selected = state.calendar.selected || today;
+
+      monthLabel.textContent = new Intl.DateTimeFormat("pt-BR", {month:"long", year:"numeric"}).format(first);
+
+      cal.innerHTML = "";
+
+      // DOW header
+      DOW.forEach(d => {
+        const el = document.createElement("div");
+        el.className = "dow";
+        el.textContent = d;
+        cal.appendChild(el);
+      });
+
+      // Pad before 1st
+      const padStart = first.getDay(); // 0=Dom
+      for(let i=0;i<padStart;i++){
+        const empty = document.createElement("div");
+        empty.className = "day muted";
+        empty.style.pointerEvents = "none";
+        empty.innerHTML = `<div class="n"> </div><div class="tag"> </div>`;
+        cal.appendChild(empty);
+      }
+
+      for(let day=1; day<=last.getDate(); day++){
+        const d = new Date(viewY, viewM, day);
+        const key = ymd(d);
+
+        const cell = document.createElement("div");
+        cell.className = "day";
+        if(key === today) cell.classList.add("today");
+        if(key === selected) cell.classList.add("selected");
+
+        const dowLong = new Intl.DateTimeFormat("pt-BR", {weekday:"long"}).format(d);
+        cell.innerHTML = `
+          <div class="n">${day}</div>
+          <div class="tag">${dowLong}</div>
+        `;
+
+        cell.addEventListener("click", () => {
+          state.calendar.selected = key;
+          pickDate.value = key;
+          saveState(state);
+          renderCalendar();
+          updateSelectedInfo();
+        });
+
+        cal.appendChild(cell);
+      }
+    }
+
+    function clampTo2026IfWanted(dateStr){
+      // Se você quiser forçar 2026: descomente a linha abaixo no "pickDate change"
+      // Aqui deixei livre, mas o título é 2026 e os contadores são 2026.
+      return dateStr;
+    }
+
+    function updateSelectedInfo(){
+      const info = document.getElementById("selectedInfo");
+      const s = state.calendar.selected || ymd(new Date());
+      const d = new Date(s + "T00:00:00");
+      const jan1 = new Date(2026,0,1);
+      const now = new Date();
+
+      const daySinceJan1 = diffDays(d, jan1);
+      const label = formatLong(d);
+      const today = ymd(now);
+
+      info.textContent =
+        `${label} • (YYYY-MM-DD: ${s}) • Dias desde 01/01/2026: ${daySinceJan1} • ${s===today ? "📍 É hoje" : "—"}`;
+    }
+
+    document.getElementById("prev").addEventListener("click", () => {
+      state.calendar.viewMonth--;
+      if(state.calendar.viewMonth < 0){ state.calendar.viewMonth = 11; state.calendar.viewYear--; }
+      saveState(state);
+      renderCalendar();
+    });
+    document.getElementById("next").addEventListener("click", () => {
+      state.calendar.viewMonth++;
+      if(state.calendar.viewMonth > 11){ state.calendar.viewMonth = 0; state.calendar.viewYear++; }
+      saveState(state);
+      renderCalendar();
+    });
+    document.getElementById("goToday").addEventListener("click", () => {
+      const now = new Date();
+      state.calendar.viewYear = now.getFullYear();
+      state.calendar.viewMonth = now.getMonth();
+      state.calendar.selected = ymd(now);
+      pickDate.value = state.calendar.selected;
+      saveState(state);
+      renderCalendar();
+      updateSelectedInfo();
+    });
+
+    pickDate.addEventListener("change", () => {
+      const v = clampTo2026IfWanted(pickDate.value);
+      if(!v) return;
+
+      const d = new Date(v + "T00:00:00");
+      state.calendar.selected = v;
+      state.calendar.viewYear = d.getFullYear();
+      state.calendar.viewMonth = d.getMonth();
+      saveState(state);
+      renderCalendar();
+      updateSelectedInfo();
+    });
+
+    renderCalendar();
+    updateSelectedInfo();
+  </script>
+</body>
+</html>
